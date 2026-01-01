@@ -1,0 +1,23 @@
+Details of abbrev.
+
+https://sites.google.com/view/elizagen-org/original-eliza
+
+See, especially:
+W'R		WHENEVER				(if)
+O'E		OTHERWISE				(else)
+E'L		END OF CONDITIONAL		(endif)
+T'O		TRANSFER TO			(goto)
+OR W'R	OR WHENEVER			(else if)
+T'H <label>	THROUGH <label>			(loop until label)
+F'N <var>	FUNCTION RETURN <var>	(return <var>)
+E'N		END OF FUNCTION
+
+
+
+$s changed to "s
+.EQ., etc. expanded to =, etc.
+' abbreviations written out
+continued lines (with a 1 in column 7?) wrapped together
+line numbering removed
+Added lisp-like comments (;;; ;; and ;)
+

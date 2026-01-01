@@ -1,0 +1,5 @@
+Incorporate comments from:
+
+https://github.com/jeffshrager/elizagen.org/blob/master/1965_Weizenbaum_MAD-SLIP/ELIZA_transcription_annotated_20220216.txt
+
+Interestingly, the comments FOLLOW the code they describe. There's a logic to this: read the thing, then check your understanding of it.
