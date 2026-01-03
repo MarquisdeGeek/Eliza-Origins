@@ -10,7 +10,8 @@ class Settings {
                 trace,
                 file,
                 recap,
-                debug
+                debug,
+                states,
             },
         } = parseArgs({
             options: {
@@ -30,6 +31,10 @@ class Settings {
                     type: 'boolean',
                     short: 'd',
                 },
+                'states': {
+                    type: 'string',
+                    short: 's',
+                },
             },
         });
 
@@ -38,6 +43,7 @@ class Settings {
         this.traceComments = trace ?? false;
         this.traceDebug    = debug ?? false;
         this.traceRecap    = recap ?? false;
+        this.traceStates   = states ?? "";
     }
 }
 

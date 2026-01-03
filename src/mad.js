@@ -366,14 +366,28 @@ class MadInterpreter {
     }
 
 
+    getTraceStats() {
+        const states = this.settings.traceStates;
+        let prefix = "";
+
+        if (states.includes("l")) {
+            prefix += prefix ? ' ' : '';
+            prefix += `limit=${this._scope.lvalue('LIMIT')}`;
+        }
+
+
+        return prefix ? `[${prefix}] ` : ``;
+    }
+
+
     // All output via these methods, please!
     writeOutput(msg) {
-        this.operatingSystem.output(msg);
+        this.operatingSystem.output(`${this.getTraceStats()}${msg}`);
     }
 
 
     writeError(msg) {
-        this.operatingSystem.error(msg);
+        this.operatingSystem.error(`${this.getTraceStats()}${msg}`);
     }
 
 }
