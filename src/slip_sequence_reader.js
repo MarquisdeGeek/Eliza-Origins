@@ -55,6 +55,10 @@ class SlipSequenceReader {
     f() { // aka FLAG aka EOF
         // return -1 if the cell contains a list name
         // (which it does when pointing to the list header)
+        // (and/or I _think_ when the cell contains only a value - as used around REF:E.SRC(001000))
+        if (typeof this.lvalue[this.indexFrom] === 'number') {
+            return -1;
+        }
         if (this.indexFrom === -1) {
             return -1;
         }

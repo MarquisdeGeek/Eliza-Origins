@@ -154,6 +154,14 @@ NEWTOP CLA*    2,4
 
 LPNTR references to sequential readers, whereas LSPNTR applies to advance readers.
 
+
+# Historic bugs
+
+* The output for "Men are all alike." does not match the expected output of "IN WHAT WAY?", but does gives identical output as the containered version. i.e. "DID YOU THINK THEY MIGHT NOT BE ALL ALIKE." (in both tapes)
+* The PRE rules (in tape 200) are not handled
+* The family relations, via DLISTs, are not handled
+
+
 # Omissions and fixes
 
 I only worked on the code to get the basics of `tape.100` working, and only with a restricted input.
