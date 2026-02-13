@@ -1,3 +1,6 @@
+const isNode = typeof process !== "undefined" && process.versions != null && process.versions.node != null;
+const isBrowser = typeof window !== "undefined";
+
 const MadInterpreter = require('./mad').MadInterpreter;
 
 
@@ -1110,7 +1113,7 @@ class Eliza {
         const esrdr = mad.slip.seqrdr('ES');
         esrdr.seqlr();
         const point = esrdr.seqlr();
-        const esf = esrdr.f();
+        let esf = esrdr.f();
         const pointr = esrdr.lspntr();
 
         if (esf === 0) {
