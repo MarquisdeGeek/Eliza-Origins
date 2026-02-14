@@ -23,6 +23,15 @@ And type `100` when asked for `Which script...`
 
 Disclaimer: This is still a work in progress, with lots of responses missing and/or broken.
 
+# Online version
+
+There is also a basic online version at https://marquisdegeek.github.io/Eliza-Origins/
+
+It does not attempt to mimic the look or feel or an IBM 7094, since we already have a Dockerfile for that.
+
+Also note that it this version auto-deploys via github actions, so it might break if there's a dodgy commit!
+
+
 
 # The files
 
@@ -188,7 +197,7 @@ Could be:
 
 # Other links
 
-* https://github.com/jeffshrager/elizagen.org
-* https://wg.criticalcodestudies.com/index.php?p=/discussion/108/the-original-eliza-in-mad-slip-2022-code-critique
-* https://github.com/rupertl/eliza-ctss/
-* https://fosdem.org/2026/schedule/event/eliza_rewriting_the_original_ai_chatbot_from_60_years_bc_before_chatgpt/
+* [ My inspiration - repo of elizagen.org ](https://github.com/jeffshrager/elizagen.org)
+* [ Code critique, from 2022 ](https://wg.criticalcodestudies.com/index.php?p=/discussion/108/the-original-eliza-in-mad-slip-2022-code-critique)
+* [ Emulating the original, with Dockerfile](https://github.com/rupertl/eliza-ctss/)
+* [ My FOSDEM 2026 talk on Eliza](https://fosdem.org/2026/schedule/event/eliza_rewriting_the_original_ai_chatbot_from_60_years_bc_before_chatgpt/)
