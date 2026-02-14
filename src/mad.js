@@ -242,6 +242,14 @@ class MadInterpreter {
     }
 
 
+    async threadReadTextAsync(targetList, sourceFilename) {
+        const sourceContents = await this.operatingSystem.readFileAsync(`tapes/tape.${sourceFilename}`);
+        const sourceList = lisp.parseList(sourceContents);
+
+        this._scope.lassign(targetList, sourceList);
+    }
+
+
     isFileOpen(fn) {
         return this.openFileStream ? true : false
     }
@@ -254,11 +262,18 @@ class MadInterpreter {
         this.openFileStreamIndex = 0;
     }
 
+    async openFileAsync(sourceFilename) {
+        const tapeFilename = `tape.${sourceFilename}`;
+        const sourceContents = await this.operatingSystem.readFileAsync(`tapes/${tapeFilename}`);
+
+        this.openFileStream = lisp.parseList(sourceContents);
+        this.openFileStreamIndex = 0;
+    }
+
 
     readList(sourceFilename) {
-        const tapeFilename = `tape.${sourceFilename}`;
-        if (!this.isFileOpen(tapeFilename)) {
-            this.openFile(tapeFilename);
+        if (!this.isFileOpen(sourceFilename)) {
+            this.openFile(sourceFilename);
         }
 
         const nextLine = this.openFileStream[this.openFileStreamIndex];

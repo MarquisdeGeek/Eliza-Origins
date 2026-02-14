@@ -109,10 +109,21 @@ class Eliza {
         // list written to JUNK. Yet, later we re-load SCRIPT line-by-line.
         // Plus, JUNK is never written between here and there. So what am I missing???
         // Q. Is this part of the reader?
-        mad.threadReadText('input', mad.lvalue('SCRIPT'));
-        mad.lvar('JUNK').lsscpy('INPUT'); // ????  check I copy, not reference, the other list
-        mad.lvar('input').mtlist();
+        // Previous sync version
+        // mad.threadReadText('input', mad.lvalue('SCRIPT'));
 
+        // Using async version, remembering to runProcessingLoopFrom
+        mad.threadReadTextAsync('input', mad.lvalue('SCRIPT'))
+        .then(() => {
+            mad.lvar('JUNK').lsscpy('INPUT'); // ????  check I copy, not reference, the other list
+            mad.lvar('input').mtlist();
+            mad.runProcessingLoopFrom(Eliza.initializeFromMyTran);
+        });
+
+    }
+
+
+    static initializeFromMyTran(mad) {
         /*
                     Through MLST, FOR I=1,1, I > 4
         MLST        LIST.(MYTRAN(I))
@@ -177,6 +188,18 @@ class Eliza {
 
         // REF:E.SRC(000240)
         mad.comment("R* * * * * * * * * * READ NEW SCRIPT");
+
+        // Our async file loader means we open and slurp the file with the open() call
+        // and use the normal sync readList method to extract each new line from the pre-loaded
+        // script.
+        mad.openFileAsync(mad.lvalue('script'))
+        .then(() => {
+            mad.runProcessingLoopFrom(Eliza.begin);
+        });
+    }
+
+
+    static begin(mad) {
 
         /*
         BEGIN       MTLIST.(INPUT) ""

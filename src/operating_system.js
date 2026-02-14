@@ -10,6 +10,7 @@ const promptSync = require('prompt-sync')({
 
 // FS still uses the sync version
 const fs = require('node:fs');
+const fsAsync = require('fs/promises');
 
 
 // This has no intention of mimicking an IBM 7094
@@ -92,6 +93,12 @@ class OperatingSystem {
 
     readFile(filename) {
         const contents = fs.readFileSync(filename, 'utf8');
+        return contents;
+    }
+
+
+    async readFileAsync(filename) {
+        const contents = await fsAsync.readFile(filename, 'utf8');
         return contents;
     }
 
