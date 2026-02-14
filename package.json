@@ -4,7 +4,8 @@
     "prompt-sync": "^4.2.0"
   },
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "build": "npx esbuild ./web/src/index_web.js --bundle --outfile=./web/dist/index.js --platform=browser && cp web/src/index.htm web/dist && cp -a tapes web/dist"
   },
   "devDependencies": {
     "parcel": "^2.16.4"
