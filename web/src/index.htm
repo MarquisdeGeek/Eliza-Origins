@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Green Screen Terminal</title>
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #000;
+        font-family: "Courier New", Courier, monospace;
+        color: #00ff66;
+    }
+
+    /* Terminal container */
+    .terminal {
+        box-sizing: border-box;
+        padding: 20px;
+        height: 100%;
+        overflow-y: auto;
+        text-shadow: 0 0 5px rgba(0, 255, 102, 0.6);
+    }
+
+    /* Scanlines */
+    .terminal::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.2),
+            rgba(0, 0, 0, 0.2) 1px,
+            rgba(0, 0, 0, 0) 2px
+        );
+    }
+
+    /* Subtle flicker */
+    @keyframes flicker {
+        0% { opacity: 1; }
+        50% { opacity: 0.97; }
+        100% { opacity: 1; }
+    }
+
+    .terminal {
+        animation: flicker 0.15s infinite;
+    }
+
+    .line {
+        white-space: pre-wrap;
+        margin-bottom: 4px;
+    }
+
+    .prompt {
+        display: flex;
+        align-items: center;
+    }
+
+    .prompt span {
+        margin-right: 5px;
+    }
+
+    input {
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #00ff66;
+        font-family: inherit;
+        font-size: 1em;
+        flex: 1;
+        caret-color: #00ff66;
+    }
+
+    /* Cursor blink effect */
+    input::selection {
+        background: #00ff66;
+        color: #000;
+    }
+</style>
+</head>
+<body>
+
+<div class="terminal" id="terminal">
+    <div class="line">ELIZA COMPUTING SYSTEM v1.0</div>
+    <div class="line">READY.</div>
+    <div class="line">ENTER 100 FOR SCRIPT IF UNSURE.</div>
+    <div class="prompt">
+        <span>&gt;</span>
+        <input type="text" id="input" autofocus>
+    </div>
+</div>
+
+<!-- the Eliza script, as converted -->
+<script src="index.js">
+</script>
+
+
+<script>
+    const input = document.getElementById("input");
+    const terminal = document.getElementById("terminal");
+
+    // Init the web elements: Output
+    eliza.os.registerCallbackOutput((msg) => {
+        const response = document.createElement("div");
+        response.className = "line";
+        response.textContent = msg;
+        terminal.insertBefore(response, terminal.lastElementChild);
+
+        input.value = "";
+        terminal.scrollTop = terminal.scrollHeight;
+    });
+
+
+    // Init the web elements: Input
+    input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+            const value = input.value;
+
+            eliza.os.addInput(value);
+        }
+    });
+
+
+    // Processing loop
+    eliza.mad.runProcessingLoopFrom(eliza.Eliza.initialize);
+</script>
+
+
+</body>
+</html>
