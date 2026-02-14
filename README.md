@@ -2,7 +2,7 @@
 
 This is an attempt to recreate the original Eliza project, created by Joseph Weizenbaum, using his original source and contents of the January 1966 CACM paper. The aim is to have a JavaScript equivalent that can run anywhere.
 
-It was first released on 1st January 2026 to celebrate the 60th anniversary of the first chatbot. Or, as I say, 60 years BC (Before ChatGPT!
+It was first released on 1st January 2026 to celebrate the 60th anniversary of the first chatbot. Or, as I say, 60 years BC (Before ChatGPT!)
 
 # Why?
 
