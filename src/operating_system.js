@@ -1,7 +1,15 @@
-const fs = require('node:fs');
-const prompt = require('prompt-sync')({
+// Use the async verion of prompt, if possible
+const prompt = require("prompt");
+prompt.message = prompt.delimiter = '';
+prompt.start();
+
+// The async prompt is for backcompat
+const promptSync = require('prompt-sync')({
     sigint: true
 });
+
+// FS still uses the sync version
+const fs = require('node:fs');
 
 
 // This has no intention of mimicking an IBM 7094
@@ -26,11 +34,37 @@ class OperatingSystem {
             // because input from files isn't auto-echo'd like prompt()
             this.output(inputMessage);
         } else {
-            inputMessage = prompt();
+            inputMessage = promptSync();
         }
 
         this.historyList.push(`< ${inputMessage}`);
         return inputMessage;
+    }
+
+
+    getInputAsync(tape_unit /*=0 for keyboard, assumed*/ ) {
+        const self = this;
+
+        return new Promise((resolve, reject) => {
+            if (self.inputList.length) {
+                const inputMessage = self.inputList.shift();
+                // because input from files isn't auto-echo'd like prompt()
+                self.output(inputMessage);
+                self.historyList.push(`< ${inputMessage}`);
+
+                resolve(inputMessage);
+
+            } else {
+                prompt.get([{
+                    name: "input",
+                    description: " ",   // We want an empty string here, but doing so shows the property name (which is worse)
+                }], function(err, res){
+                    const inputMessage = res.input;
+                    self.historyList.push(`< ${inputMessage}`);
+                    resolve(inputMessage);
+                });
+            }
+        });
     }
 
 

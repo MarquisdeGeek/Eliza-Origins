@@ -1,5 +1,3 @@
-const fs = require('node:fs');
-
 // The system
 const OperatingSystem = require('./operating_system');
 const MadInterpreter = require('./mad').MadInterpreter;
@@ -22,23 +20,23 @@ if (settings.traceDebug) {
 
 // Load in sample input
 if (settings.useInputFile) {
-    const testFileContents = fs.readFileSync(settings.useInputFile, 'utf8');
+    const testFileContents = operatingSystem.readFile(settings.useInputFile);
     testFileContents.split('\n').forEach((line) => {
         operatingSystem.addInput(line);
     });
 }
 
 // Processing loop
-mad.transferTo(Eliza.initialize);
-while (mad.callNextLabel()) {
-    // NOP
-}
+mad.runProcessingLoopFrom(Eliza.initialize);
+
 
 // Dump all interactions (with > and < annotations)
-if (settings.traceRecap) {
-    mad.writeOutput(`Eliza Recap:`);
+process.on('exit', (code) => {
+    if (settings.traceRecap) {
+        mad.writeOutput(`Eliza Recap:`);
 
-    operatingSystem.historyList.forEach((r) => {
-        mad.writeOutput(r);
-    });
-}
+        operatingSystem.historyList.forEach((r) => {
+            mad.writeOutput(r);
+        });
+    }
+});

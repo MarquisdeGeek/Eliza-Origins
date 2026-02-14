@@ -171,6 +171,7 @@ I only worked on the code to get the basics of `tape.100` working, and only with
 * Ensure all code/comments has line numbers/reference in
 * Better clarity in types to determine if var is meant to be a string, int, list, or other
 * mkArrayVar is smelly! (and probably unnecessary, outside of testing)
+* Asking simply "why" terminates
 
 # For fun
 

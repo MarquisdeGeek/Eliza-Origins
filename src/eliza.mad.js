@@ -39,8 +39,22 @@ class Eliza {
         mad.exec('PRINT COMMENT', 'WHICH SCRIPT DO YOU WISH TO PLAY');
         // About the formats:
         // https://pages.mtu.edu/~shene/COURSES/cs201/NOTES/chap05/format.html
-        mad.exec('READ FORMAT', 'SNUMB,SCRIPT');
 
+        // This is the (old) sync version
+        // mad.exec('READ FORMAT', 'SNUMB,SCRIPT');
+        // or use the newer version
+        // mad.readFormat('SNUMB,SCRIPT');
+
+        // This is the async version
+        // (we need to manually restart the processing loop here, and everywhere that results in an async call)
+        //mad.getInputAsync()
+        mad.readFormatAsync('SNUMB,SCRIPT')
+        .then(() => {
+            mad.runProcessingLoopFrom(Eliza.initializeFromScript);
+        });
+    }
+
+    static initializeFromScript(mad) {
         /*
         ;
         ; Initialise four lists. These are:
@@ -414,9 +428,15 @@ class Eliza {
         ;
         */
         mad.lvar('INPUT').mtlist();
-        mad.lvar('INPUT').tread(0);
 
-        mad.transferTo(Eliza.seek_keyword);
+        // Sync version
+        // mad.tread(0, 'INPUT');
+
+        // Async version
+        mad.treadAsync(0, 'INPUT')
+        .then(() => {
+            mad.runProcessingLoopFrom(Eliza.seek_keyword);
+        });
     }
 
 
@@ -507,7 +527,7 @@ class Eliza {
 
         Create the Slip sequence reader, S, for the user's INPUT list.
         */
-        const s = mad.slip.seqrdr('INPUT');
+        let s = mad.slip.seqrdr('INPUT');
 
         // Our handlers to avoid GOTO
         const ML_ENDTXT = 'ML_ENDTXT';

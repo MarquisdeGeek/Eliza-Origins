@@ -116,19 +116,8 @@ class MadInterpreter {
         });
 
         this._addInstruction('READ FORMAT', (params) => {
-            const param_list = params.split(',');
-            const varName = param_list[1]
-
-            const value = this.operatingSystem.getInput();
-
-            this.declareVariable(varName);
-            this.lvar(varName).assign(value);
+            this.readFormat(params);
         });
-
-        this._addInstruction('x', (params) => {
-            const var_list = params.split(',');
-        });
-
     }
 
 
@@ -286,6 +275,59 @@ class MadInterpreter {
     }
 
 
+    // IO handlers, with sync and async parts
+    tread(tape_unit, varName) {
+        const inputLine = this.operatingSystem.getInput(tape_unit);
+
+        return this.#treadHandleResult(varName, inputLine);
+    }
+
+
+    treadAsync(tape_unit, varName) {
+        return new Promise((resolve, reject) => {
+            this.operatingSystem.getInputAsync()
+            .then((inputLine) => {
+                this.#treadHandleResult(varName, inputLine);
+                resolve();
+            });
+        });
+    }
+
+
+    #treadHandleResult(varName, inputLine) {
+        const inputAsList = inputLine.toUpperCase().split(' ');
+        const value = inputLine ? inputAsList : []; // ensures an empty line is an empty array, and not an array of one element (which is the empty line)
+
+        this.lassign(varName, value);
+    }
+
+
+    readFormat(params) {
+        const value = this.operatingSystem.getInput();
+        this.#readFormatHandleResult(params, value);
+    }
+
+
+    readFormatAsync(params) {
+        return new Promise((resolve, reject) => {
+            this.operatingSystem.getInputAsync()
+            .then((inputLine) => {
+                this.#readFormatHandleResult(params, inputLine);
+                resolve();
+            });
+        });
+    }
+
+
+    #readFormatHandleResult(params, value) {
+        const param_list = params.split(',');
+        const varName = param_list[1];
+
+        this.declareVariable(varName);
+        this.lassign(varName, value);
+    }
+
+
     // The MAD SLIP handlers
     _addInstruction(name, cb) {
         // Although MAD used all upper case we, in the 21st century, have more sensitive eyes :)
@@ -390,6 +432,13 @@ class MadInterpreter {
         this.operatingSystem.error(`${this.getTraceStats()}${msg}`);
     }
 
+    runProcessingLoopFrom(nextLabel) {
+        this.transferTo(nextLabel);
+
+        while (this.callNextLabel()) {
+            // NOP
+        }
+    }
 }
 
 

@@ -293,13 +293,6 @@ class LList extends LType {
     }
 
 
-    tread(tape_unit) {
-        const inputLine = this.scope.operatingSystem.getInput(tape_unit);
-        const inputAsList = inputLine.toUpperCase().split(' ');
-        this.contents = inputLine ? inputAsList : []; // ensures an empty line is an empty array, and not an array of one element (which is the empty line)
-    }
-
-
     mtlist() {
         this.contents = [];
     }

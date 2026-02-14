@@ -1,8 +1,12 @@
 {
   "dependencies": {
+    "prompt": "^1.3.0",
     "prompt-sync": "^4.2.0"
   },
   "scripts": {
     "start": "node src/index.js"
+  },
+  "devDependencies": {
+    "parcel": "^2.16.4"
   }
 }
